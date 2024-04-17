@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>How to Design Login & Registration Form Transition</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <img src="images/logof.png" alt="Logo" />
+    </div>
+    <div class="cont">
+      <div class="form sign-in">
+        <h2>Sign In</h2>
+        <label>
+          <span>Email Address</span>
+          <input type="email" name="email" id="login_email" />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" id="login_password" />
+        </label>
+        <button class="submit" type="button" id="login" name="login">
+          Sign In
+        </button>
+        <p class="forgot-pass">Forgot Password ?</p>
+      </div>
+
+      <div class="sub-cont">
+        <div class="img">
+          <div class="img-text m-up">
+            <h2>New here?</h2>
+            <p>Sign up and discover great amount of new opportunities!</p>
+          </div>
+          <div class="img-text m-in">
+            <h2>One of us?</h2>
+            <p>
+              If you already has an account, just sign in. We've missed you!
+            </p>
+          </div>
+          <div class="img-btn">
+            <span class="m-up">Sign Up</span>
+            <span class="m-in">Sign In</span>
+          </div>
+        </div>
+        <div class="form sign-up">
+          <h2>Sign Up</h2>
+          <label>
+            <span>Name</span>
+            <input type="text" />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" id="email" />
+          </label>
+          <label>
+            <span>Password</span>
+            <input type="password" id="password" />
+          </label>
+          <label>
+            <span>Confirm Password</span>
+            <input type="password" />
+          </label>
+          <button type="button" class="submit" id="register" name="register">
+            Sign Up Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+
+    import {
+      onSnapshot,
+      getFirestore,
+      addDoc,
+      collection,
+      getDocs,
+      query,
+      orderBy,
+    } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js";
+    import { getAuth,createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtUNY1sF2q1QnJZihGwx7rVoHC1w0Son4",
+      authDomain: "don-pdf.firebaseapp.com",
+      projectId: "don-pdf",
+      storageBucket: "don-pdf.appspot.com",
+      messagingSenderId: "560500635844",
+      appId: "1:560500635844:web:0c28cbf61a434758457191",
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); // Initialize Firebase Authentication
+    // console.log(app);
+    //----- New Registration code start
+    document.getElementById("register").addEventListener("click", function () {
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      //For new registration
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          alert("Registration successfully!!");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          console.log(errorMessage);
+          alert(error);
+        });
+    });
+    //----- End
+
+    //----- Login code start
+    document.getElementById("login").addEventListener("click", function () {
+      var email = document.getElementById("login_email").value;
+      var password = document.getElementById("login_password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          alert(user.email + " Login successfully!!!");
+          window.location.href = 'dashboard.html'
+          document.getElementById("logout").style.display = "block";
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          alert(errorMessage);
+        });
+    });
+    //----- End
+  </script>
+</html>
